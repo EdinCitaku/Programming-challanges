@@ -1,6 +1,10 @@
 from PIL import Image
 def IterateFunction(z,list):
+<<<<<<< HEAD
     #The function we use is set in a text-file called 'Input-Function'
+=======
+    #The function we use here is z^2-0.221-0,731i
+>>>>>>> 311407acc4d8a2242ced57cc6addfafc7aac8d77
     #The threshold we use is 2
     idx = 0
     while abs(z) < 2:
@@ -28,7 +32,10 @@ print("Hello and welcome to the Trippy-Julia-Fractals-Generator!")
 width = int(input("Please enter the width of the picture you want:"))
 height = int(input("Please enter the height:"))
 #the user can pick his own function
+<<<<<<< HEAD
 #the txt file has to have the structure xz^n +/- yz^m +/- ... +/- ai
+=======
+>>>>>>> 311407acc4d8a2242ced57cc6addfafc7aac8d77
 f = open('Input-Function','r')
 #the function is safed in the flist in the format [factor,power,factor,power...]
 #z^2 + 2z^1 -> [1,2,2,1]

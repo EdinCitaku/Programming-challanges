@@ -1,4 +1,5 @@
 # Programming-challanges
+<<<<<<< HEAD
 Author: Edin Citaku
 -----------
 Description
@@ -33,9 +34,9 @@ Link:		https://www.reddit.com/r/dailyprogrammer/comments/4v5h3u/20160729_challen
 
 Description:	You’re making a music video for an acid rock band. Far out man! Of course they want visual effects with fractals, because they’ve googled fractals, and they’re super trippy. Of course, 			they don’t know the mad programming needed to make these fractals. But you do, and that’s why they pay you money.
 
-		A Julia set is made by applying a function to the complex numbers repeatedly and keeping track of when the resulting numbers reach a threshold value. One number may take 200 iterations 			to achieve and absolute value over a certain threshold, value while an almost identical one might only take 10 iterations.
+A Julia set is made by applying a function to the complex numbers repeatedly and keeping track of when the resulting numbers reach a threshold value. One number may take 200 iterations to achieve and absolute value over a certain threshold, value while an almost identical one might only take 10 iterations.
  
-		Here, we’re interested in Julia sets because you can make pretty pictures with them if you map each complex input number to a pixel on the screen. The task today is to write a program 		that does all the math necessary for your computer to draw one of these beautiful pictures. In addition to making a buck from the band, you can also make a set of nice wallpapers for 			your desktop!
+Here, we’re interested in Julia sets because you can make pretty pictures with them if you map each complex input number to a pixel on the screen. The task today is to write a program 		that does all the math necessary for your computer to draw one of these beautiful pictures. In addition to making a buck from the band, you can also make a set of nice wallpapers for 			your desktop!
 
 How to use:	pick your desired function into a file called "Input-Function" and start the script. Before your picture(in bmp format) is generated you have to pick your desired resolution.
 
@@ -43,3 +44,5 @@ Input-File:	The format looks like that +/- az^n +/- bz^m .... lz^v + oi
 	 	All the characters exzeot the z and i are variables. Furthermore the numbers after the ^ have to be integers, while the numbers in front of the z can be floats aswell. The numbers 
 	 	before the i can be a float too	
 		The function in the link would look like that in the input file: + 1z^2 -0.221z^0 - 0.713i 
+=======
+>>>>>>> 311407acc4d8a2242ced57cc6addfafc7aac8d77
