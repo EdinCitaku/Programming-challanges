@@ -1,5 +1,5 @@
 # Programming-challanges
-<<<<<<< HEAD
+
 Author: Edin Citaku
 -----------
 Description
@@ -44,5 +44,5 @@ Input-File:	The format looks like that +/- az^n +/- bz^m .... lz^v + oi
 	 	All the characters exzeot the z and i are variables. Furthermore the numbers after the ^ have to be integers, while the numbers in front of the z can be floats aswell. The numbers 
 	 	before the i can be a float too	
 		The function in the link would look like that in the input file: + 1z^2 -0.221z^0 - 0.713i 
-=======
+
 >>>>>>> 311407acc4d8a2242ced57cc6addfafc7aac8d77
