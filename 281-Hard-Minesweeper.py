@@ -12,7 +12,7 @@ def  createArray(f):
             if chars == '\n':
                 break
             elif chars == ' ':
-                field[idx-1].append(0)
+                field[idx-1].append('U')
             elif chars == '?':
                 field[idx-1].append(chars)
             else:
@@ -20,8 +20,7 @@ def  createArray(f):
                  #field[idx-1].append(chars)
     #sometimes the line ends to early
         while len(field[idx-1])<width and idx!=0:
-            field[idx-1].append(0)
-    print(field)
+            field[idx-1].append('U')
     return field
 def returnAdjacentField(number,l,x,y):
     if x > 0:
@@ -44,19 +43,18 @@ def returnAdjacentField(number,l,x,y):
         return [True,x,y+1]
     return [False,-1,-1]
 
-#Long write, there may be a more efficient solution
+
 def sorroundingUnknown(field,x,y):
     "Returns the number of Questionmarks that are sorrounding field[x][y]"
-    print("check")
     ret = 0
     for i in range(6):
-        if returnAdjacentField(i,len(field),x,y)[0] and field[returnAdjacentField(i,len(field),x,y)[1]][returnAdjacentField(i,len(field),x,y)[2]]=='?':
+        if returnAdjacentField(i,len(field),x,y)[0] and (field[returnAdjacentField(i,len(field),x,y)[1]][returnAdjacentField(i,len(field),x,y)[2]]=='?' or field[returnAdjacentField(i,len(field),x,y)[1]][returnAdjacentField(i,len(field),x,y)[2]] == 'N'):
             ret+=1
     return ret
 
 #Has a lot of duplicate code with the function above, should think about a prettier solution
-def Markmines(field,x,y):
-    print("check")
+def MarkNewmines(field,x,y):
+    "Marks all the Mines new found Mines in the field with a 'N'"
     for i in range(6):
         if returnAdjacentField(i,len(field),x,y)[0] and field[returnAdjacentField(i,len(field),x,y)[1]][returnAdjacentField(i,len(field),x,y)[2]] =='?':
             field[returnAdjacentField(i,len(field),x,y)[1]][returnAdjacentField(i,len(field),x,y)[2]] ='N'
@@ -67,12 +65,55 @@ def FindMines(field):
     i = 0
     for i,col in enumerate(field):
         for j,el in enumerate(col):
-            print(isinstance(el,int))
             if el != '?' and isinstance(el,int) and el>0 and el >= sorroundingUnknown(field,i,j):
-                 Markmines(field,i,j)
+                 MarkNewmines(field,i,j)
+
+
+def Markmines(field):
+    "Marks all Mines by Setting the 'N' to 'M', also decreases all Numbers around this mine by one"
+    ret = 0
+    for i, col in enumerate(field):
+        for j,el in enumerate(col):
+            if(field[i][j] == 'N'):
+                field[i][j] =='M'
+                ret+=1
+                #sets all decreases all sorrounding fields
+                for idx in range(6):
+                    temp = returnAdjacentField(idx,len(field),i,j)
+                    if temp[0] and isinstance(field[temp[1]][temp[2]],int):
+                        field[temp[1]][temp[2]] -=1
+    return ret
+
+def findimpossibleFields(field):
+    "Finds all the 0 in the field and deletes the '?' around them, cause there cant be a mine"
+    for i, col in enumerate(field):
+        for j,el in enumerate(col):
+            if field[i][j] == 0:
+                for idx in range(6):
+                    temp = returnAdjacentField(idx,len(field),i,j)
+                    if temp[0] and field[temp[1]][temp[2]] == "?":
+                        field[temp[1]][temp[2]] = "I"
+
 
 width = 0
 f = open("Input-Mines.txt","r")
 field = createArray(f)
-FindMines(field)
 print(field)
+print(field)
+#The Solving of the Field takes here place
+for i in range(3):
+    FindMines(field)
+    Markmines(field)
+    findimpossibleFields(field)
+    print(field)
+f.close()
+#The output File is written
+f2 = open("Output-Mines.txt","w")
+for i in range(len(field)):
+    for j in range(len(field)):
+        if field[i][j] == 'N':
+            f2.write(str(i))
+            f2.write(str(j))
+            f2.write("\n")
+print("Abgeschlossen!")
+f2.close()
