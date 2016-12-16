@@ -22,7 +22,10 @@ def  createArray(f):
         while len(field[idx-1])<width and idx!=0:
             field[idx-1].append('U')
     return field
+
+
 def returnAdjacentField(number,l,x,y):
+    "Returns an array wit the coordinants Adjacent to field[x][y], depending on the input int 'number'. Also the first entry in the array says wether this field existed(False if OutOfBound)"
     if x > 0:
         if number == 0:
             return [True,x-1,y]
@@ -39,7 +42,7 @@ def returnAdjacentField(number,l,x,y):
             return [True, x+1,y+1]
     if y >0 and number == 6:
         return [True,x,y-1]
-    if y <l-1 and (field[x][y+1] == '?' or field[x][y+1] == 'N'):
+    if y <l-1 and number == 7:
         return [True,x,y+1]
     return [False,-1,-1]
 
@@ -47,15 +50,15 @@ def returnAdjacentField(number,l,x,y):
 def sorroundingUnknown(field,x,y):
     "Returns the number of Questionmarks that are sorrounding field[x][y]"
     ret = 0
-    for i in range(6):
+    for i in range(8):
         if returnAdjacentField(i,len(field),x,y)[0] and (field[returnAdjacentField(i,len(field),x,y)[1]][returnAdjacentField(i,len(field),x,y)[2]]=='?' or field[returnAdjacentField(i,len(field),x,y)[1]][returnAdjacentField(i,len(field),x,y)[2]] == 'N'):
             ret+=1
     return ret
 
 #Has a lot of duplicate code with the function above, should think about a prettier solution
 def MarkNewmines(field,x,y):
-    "Marks all the Mines new found Mines in the field with a 'N'"
-    for i in range(6):
+    "Marks all new found Mines in the field with a 'N'"
+    for i in range(8):
         if returnAdjacentField(i,len(field),x,y)[0] and field[returnAdjacentField(i,len(field),x,y)[1]][returnAdjacentField(i,len(field),x,y)[2]] =='?':
             field[returnAdjacentField(i,len(field),x,y)[1]][returnAdjacentField(i,len(field),x,y)[2]] ='N'
 
@@ -78,7 +81,7 @@ def Markmines(field):
                 field[i][j] =='M'
                 ret+=1
                 #sets all decreases all sorrounding fields
-                for idx in range(6):
+                for idx in range(8):
                     temp = returnAdjacentField(idx,len(field),i,j)
                     if temp[0] and isinstance(field[temp[1]][temp[2]],int):
                         field[temp[1]][temp[2]] -=1
@@ -89,7 +92,7 @@ def findimpossibleFields(field):
     for i, col in enumerate(field):
         for j,el in enumerate(col):
             if field[i][j] == 0:
-                for idx in range(6):
+                for idx in range(8):
                     temp = returnAdjacentField(idx,len(field),i,j)
                     if temp[0] and field[temp[1]][temp[2]] == "?":
                         field[temp[1]][temp[2]] = "I"
@@ -99,15 +102,16 @@ width = 0
 f = open("Input-Mines.txt","r")
 field = createArray(f)
 print(field)
-print(field)
 #The Solving of the Field takes here place
 for i in range(3):
     FindMines(field)
     Markmines(field)
     findimpossibleFields(field)
-    print(field)
+
+print(field)
 f.close()
 #The output File is written
+
 f2 = open("Output-Mines.txt","w")
 for i in range(len(field)):
     for j in range(len(field)):
@@ -117,3 +121,6 @@ for i in range(len(field)):
             f2.write("\n")
 print("Abgeschlossen!")
 f2.close()
+
+#teste die Methode returnAdjacentField
+#for i in range(8)
