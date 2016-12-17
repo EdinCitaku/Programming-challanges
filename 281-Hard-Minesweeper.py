@@ -1,3 +1,9 @@
+'''
+This Version know works for simple problems. And Will find all possible mines in a given field
+To determine ALL safe cells, you have to iterate through all possible Mine configurations and see, in witch on, the safe spaces remain the same !
+This will be added soon !
+'''
+
 #The minefield will be safed as a 2 dimensional list
 def  createArray(f):
     "Creates a 2Dimensional Array of a Minefeld from an Inputfile"
