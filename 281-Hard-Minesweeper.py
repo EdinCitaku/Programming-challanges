@@ -23,7 +23,6 @@ def  createArray(f):
             field[idx-1].append('U')
     return field
 
-
 def returnAdjacentField(number,l,x,y):
     "Returns an array wit the coordinants Adjacent to field[x][y], depending on the input int 'number'. Also the first entry in the array says wether this field existed(False if OutOfBound)"
     if x > 0:
@@ -77,10 +76,10 @@ def Markmines(field):
     ret = 0
     for i, col in enumerate(field):
         for j,el in enumerate(col):
-            if(field[i][j] == 'N'):
-                field[i][j] =='M'
+            if field[i][j] == 'N':
+                field[i][j] = 'M'
                 ret+=1
-                #sets all decreases all sorrounding fields
+                #decreases all sorrounding fields
                 for idx in range(8):
                     temp = returnAdjacentField(idx,len(field),i,j)
                     if temp[0] and isinstance(field[temp[1]][temp[2]],int):
@@ -101,26 +100,23 @@ def findimpossibleFields(field):
 width = 0
 f = open("Input-Mines.txt","r")
 field = createArray(f)
-print(field)
+#print(field)
+FindMines(field)
 #The Solving of the Field takes here place
-for i in range(3):
-    FindMines(field)
-    Markmines(field)
+while Markmines(field) >0:
     findimpossibleFields(field)
+    FindMines(field)
 
-print(field)
+#print(field)
 f.close()
 #The output File is written
 
 f2 = open("Output-Mines.txt","w")
 for i in range(len(field)):
     for j in range(len(field)):
-        if field[i][j] == 'N':
+        if field[i][j] == 'I':
             f2.write(str(i))
             f2.write(str(j))
             f2.write("\n")
-print("Abgeschlossen!")
+print("Finished")
 f2.close()
-
-#teste die Methode returnAdjacentField
-#for i in range(8)
