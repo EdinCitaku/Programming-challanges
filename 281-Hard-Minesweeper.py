@@ -102,6 +102,43 @@ def findimpossibleFields(field):
                     if temp[0] and field[temp[1]][temp[2]] == "?":
                         field[temp[1]][temp[2]] = "I"
 
+def findextraFields(field):
+    "Finds all the safe fields through iteration"
+    for i,col in enumerate(field):
+        for j,el in enumerate(col):
+            if isinstance(el,int) and el > 0:
+                #Hier wird nun durchiteriert
+                field2 = list(field)
+
+def iterateMines(field,x,y):
+    "Iterates through all the possible mines in a given field"
+    m = field[x][y] #number of fields that are around the field
+    free = [] #List of all the coordinates of free fields
+    for i in range(8):
+        temp = returnAdjacentField(i,len(field),x,y)
+        if temp[0] and field[temp[1]][temp[2]] == '?':
+            free.append([temp[1],temp[2]])
+    pos = 0
+
+    for it in range(len(free)-m)
+        #place the mines
+        for i in range(m):
+            #T stands for Testmine and is only used in this context
+            if i == 0:
+                field[free[i+it-1][0]][free[i+it-1][1]]='?'
+            else:
+                field[free[len(free)-i+1][0]][free[len(free)-i+1][1]] = '?'
+            field[free[i+it][0]][free[i+it][1]] = 'T'
+        for i in range(m-2):
+            for j in range(m-2-i):
+                field[free[it+m-i][0]][free[it+m-i][1]]= '?'
+                field[free[it+m-i+1][0]][free[it+m-i+1][1]]= 'T'
+                #Tests for impossible fields
+            #reset the 'T fields'
+
+
+
+
 
 width = 0
 f = open("Input-Mines.txt","r")
