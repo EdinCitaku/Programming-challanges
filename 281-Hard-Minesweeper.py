@@ -3,7 +3,7 @@ This Version know works for simple problems. And Will find all possible mines in
 To determine ALL safe cells, you have to iterate through all possible Mine configurations and see, in witch on, the safe spaces remain the same !
 This will be added soon !
 '''
-
+from tabulate import tabulate
 #The minefield will be safed as a 2 dimensional list
 def  createArray(f):
     "Creates a 2Dimensional Array of a Minefeld from an Inputfile"
@@ -32,22 +32,22 @@ def  createArray(f):
 def returnAdjacentField(number,l,x,y):
     "Returns an array wit the coordinants Adjacent to field[x][y], depending on the input int 'number'. Also the first entry in the array says wether this field existed(False if OutOfBound)"
     if x > 0:
-        if number == 0:
+        if number == 1:
             return [True,x-1,y]
-        if y>0 and number == 1:
+        if y>0 and number == 0:
             return [True,x-1,y-1]
         if y<l-1 and number ==2:
             return [True,x-1,y+1]
     if x < l-1:
-        if number == 3:
+        if number == 5:
             return [True,x+1,y]
-        if y>0 and number ==4:
+        if y>0 and number ==6:
             return [True,x+1,y-1]
-        if y<l-1 and number ==5 :
+        if y<l-1 and number ==4 :
             return [True, x+1,y+1]
-    if y >0 and number == 6:
+    if y >0 and number == 7:
         return [True,x,y-1]
-    if y <l-1 and number == 7:
+    if y <l-1 and number == 3:
         return [True,x,y+1]
     return [False,-1,-1]
 
@@ -111,37 +111,37 @@ def findextraFields(field):
                 field2 = list(field)
 
 def iterateMines(field,x,y):
-    "Iterates through all the possible mines in a given field"
-    m = field[x][y] #number of fields that are around the field
+    "Iterates through all the possible mines around a given point"
+    m = field[x][y] #number of mines that are around the field
     free = [] #List of all the coordinates of free fields
     for i in range(8):
         temp = returnAdjacentField(i,len(field),x,y)
         if temp[0] and field[temp[1]][temp[2]] == '?':
             free.append([temp[1],temp[2]])
-    pos = 0
+    print tabulate (free)
+    iterateMinesrecursive(field,free,m,m,0)
 
-    for it in range(len(free)-m)
-        #place the mines
-        for i in range(m):
-            #T stands for Testmine and is only used in this context
-            if i == 0:
-                field[free[i+it-1][0]][free[i+it-1][1]]='?'
-            else:
-                field[free[len(free)-i+1][0]][free[len(free)-i+1][1]] = '?'
-            field[free[i+it][0]][free[i+it][1]] = 'T'
-        for i in range(m-2):
-            for j in range(m-2-i):
-                field[free[it+m-i][0]][free[it+m-i][1]]= '?'
-                field[free[it+m-i+1][0]][free[it+m-i+1][1]]= 'T'
-                #Tests for impossible fields
-            #reset the 'T fields'
+def iterateMinesrecursive(field,free,n,minenumber,startpoint):
+    "The recursive part of the iterateMines() function"
+    for i in range(len(free)-startpoint-minenumber+2):
+        if i != 0:
+            #Set the old testMine to '?' back again
+            field[free[i+startpoint-1][0]][free[i+startpoint-1][1]] = '?'
+        field[free[i+startpoint][0]][free[i+startpoint][1]] = 'T'
+        if n>1:
+            iterateMinesrecursive(field,free,n-1,minenumber,startpoint+i+1)
+        else:
+            print tabulate(field)
+            #Test for ImpossibleMines
+    #Delete the last mine
+    field[free[len(free)-n][0]][free[len(free)-n][1]] = '?'
 
 
 
 
 
 width = 0
-f = open("Input-Mines.txt","r")
+f = open("Input","r")
 field = createArray(f)
 #print(field)
 FindMines(field)
@@ -153,7 +153,8 @@ while Markmines(field) >0:
 #print(field)
 f.close()
 #The output File is written
-
+print tabulate(field)
+iterateMines(field,1,3)
 f2 = open("Output-Mines.txt","w")
 for i in range(len(field)):
     for j in range(len(field)):
