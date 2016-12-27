@@ -1,6 +1,6 @@
 '''
 This Version know works for simple problems. And Will find all possible mines in a given field
-To determine ALL safe cells, you have to iterate through all possible Mine configurations and see, in witch on, the safe spaces remain the same !
+To determine ALL safe cells, you have to iterate through all possible Mine configurations and see, in which one, the safe spaces remain the same !
 This will be added soon !
 '''
 from tabulate import tabulate
@@ -121,19 +121,17 @@ def iterateMines(field,x,y):
             free.append([temp[1],temp[2]])
         elif temp[0] and isinstance(field[temp[1]][temp[2]],int) and field[temp[1]][temp[2]] > 0:
             unfree.append([temp[1],temp[2]]) #To find actual impossible fields
-    print tabulate (free)
     iterateMinesrecursive(field,free,unfree,m,m,0,True)
     #Mark the impossible mines in the field (you could test for less fields)
     for i,col in enumerate(field):
         for j,el in enumerate(col):
             if el == 'K':
                 field[i][j] = 'I'
-    print tabulate (field)
 
 
 def iterateMinesrecursive(field,free,unfree,n,minenumber,startpoint,first):
     "The recursive part of the iterateMines() function"
-    for i in range(len(free)-startpoint-minenumber+2):
+    for i in range(len(free)-startpoint):
         newfirst = i==0 and first
         if i != 0:
             #Set the old testMine to '?' back again
@@ -144,7 +142,6 @@ def iterateMinesrecursive(field,free,unfree,n,minenumber,startpoint,first):
         else:
             for i in range(len(unfree)):
                 findimpossibleFieldsiterate(field,unfree[i][0],unfree[i][1],newfirst)
-            print tabulate(field)
             #Test for ImpossibleMines
     #Delete the last mine
     field[free[len(free)-n][0]][free[len(free)-n][1]] = '?'
@@ -155,10 +152,9 @@ def findimpossibleFieldsiterate(field,x,y,first):
     n = 0
     for i in range(8):
         temp = returnAdjacentField(i,len(field),x,y)
-        if temp[0] and field[temp[1]][temp[2]] == 'T':
+        if temp[0] and field[temp[1]][temp[2]] == 'T' :
             n+=1
     ret =  n == field[x][y]
-    print ret,first
 
     #The field is filled with "K" which are Temporary-Imposible-Mines
     for i in range(8):
@@ -168,7 +164,7 @@ def findimpossibleFieldsiterate(field,x,y,first):
                 if temp[0] and field[temp[1]][temp[2]] == '?':
                      field[temp[1]][temp[2]] = 'K'
         else:
-            if temp[0] and field[temp[1]][temp[2]] == 'K':
+            if temp[0] and field[temp[1]][temp[2]] == 'K' :
                 field[temp[1]][temp[2]] = '?'
     return ret
 
@@ -187,12 +183,13 @@ while Markmines(field) >0:
 #print(field)
 f.close()
 #The output File is written
-print tabulate(field)
+
+#Find impossible Fields through Iteration
 for i, col in enumerate(field):
     for j,el in enumerate(col):
         if isinstance(el,int) and el > 0:
             iterateMines(field,i,j)
-
+FindMines(field)
 f2 = open("Output-Mines.txt","w")
 for i in range(len(field)):
     for j in range(len(field)):
@@ -200,5 +197,6 @@ for i in range(len(field)):
             f2.write(str(i))
             f2.write(str(j))
             f2.write("\n")
+print tabulate (field)
 print("Finished")
 f2.close()
