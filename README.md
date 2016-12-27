@@ -43,5 +43,27 @@ How to use:	pick your desired function into a file called "Input-Function" and s
 Input-File:	The format looks like that +/- az^n +/- bz^m .... lz^v + oi 	
 	 	All the characters exzept the 'z' and 'i' represent interchangable numbers,that can be floats to.Zhe numbers after the '^' have to be integers though.
 		The recommended function provided in the link would look like this:: + 1z^2 -0.221z^0 - 0.713i 
+		
+-----------
+281-Minesweeper-Solver
+-----------
+Link:		https://www.reddit.com/r/dailyprogrammer/comments/50s3ax/20160902_challenge_281_hard_minesweeper_solver/
+Description:	In this challenge you will come up with an algorithm to solve the classic game of Minesweeper. The brute force approach is impractical since the search space size is anywhere around 1020 to 10100 depending on the situation, you'll have to come up with something clever.
+
+Input-File:	The first line is always a single number describing how many rows/columns the field has
+		From the second line on the the field is printed out. "?" indicate and unknown field, " " a field without mines 
+		and a number "n" describes how many mines are in direct neighbourhood of this field.
+		Example:
+		9
+		    1????
+		    1????
+		    111??
+		      1??
+		1211  1??
+		???21 1??
+		????211??
+		?????????
+		?????????
+Output-File:	Each line conists of two numbers "x y" and show the coordinates of fields where a mine can NOT be.
 
 >>>>>>> 311407acc4d8a2242ced57cc6addfafc7aac8d77
