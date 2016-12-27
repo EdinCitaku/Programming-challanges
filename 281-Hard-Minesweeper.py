@@ -114,29 +114,63 @@ def iterateMines(field,x,y):
     "Iterates through all the possible mines around a given point"
     m = field[x][y] #number of mines that are around the field
     free = [] #List of all the coordinates of free fields
+    unfree = []
     for i in range(8):
         temp = returnAdjacentField(i,len(field),x,y)
         if temp[0] and field[temp[1]][temp[2]] == '?':
             free.append([temp[1],temp[2]])
+        elif temp[0] and isinstance(field[temp[1]][temp[2]],int) and field[temp[1]][temp[2]] > 0:
+            unfree.append([temp[1],temp[2]]) #To find actual impossible fields
     print tabulate (free)
-    iterateMinesrecursive(field,free,m,m,0)
+    iterateMinesrecursive(field,free,unfree,m,m,0,True)
+    #Mark the impossible mines in the field (you could test for less fields)
+    for i,col in enumerate(field):
+        for j,el in enumerate(col):
+            if el == 'K':
+                field[i][j] = 'I'
+    print tabulate (field)
 
-def iterateMinesrecursive(field,free,n,minenumber,startpoint):
+
+def iterateMinesrecursive(field,free,unfree,n,minenumber,startpoint,first):
     "The recursive part of the iterateMines() function"
     for i in range(len(free)-startpoint-minenumber+2):
+        newfirst = i==0 and first
         if i != 0:
             #Set the old testMine to '?' back again
             field[free[i+startpoint-1][0]][free[i+startpoint-1][1]] = '?'
         field[free[i+startpoint][0]][free[i+startpoint][1]] = 'T'
         if n>1:
-            iterateMinesrecursive(field,free,n-1,minenumber,startpoint+i+1)
+            iterateMinesrecursive(field,free,unfree,n-1,minenumber,startpoint+i+1,newfirst)
         else:
+            for i in range(len(unfree)):
+                findimpossibleFieldsiterate(field,unfree[i][0],unfree[i][1],newfirst)
             print tabulate(field)
             #Test for ImpossibleMines
     #Delete the last mine
     field[free[len(free)-n][0]][free[len(free)-n][1]] = '?'
 
+#first is a boolean
+def findimpossibleFieldsiterate(field,x,y,first):
+    "Finds impossibleMines in the iterateMines()-function"
+    n = 0
+    for i in range(8):
+        temp = returnAdjacentField(i,len(field),x,y)
+        if temp[0] and field[temp[1]][temp[2]] == 'T':
+            n+=1
+    ret =  n == field[x][y]
+    print ret,first
 
+    #The field is filled with "K" which are Temporary-Imposible-Mines
+    for i in range(8):
+        temp = returnAdjacentField(i,len(field),x,y)
+        if ret:
+            if first:
+                if temp[0] and field[temp[1]][temp[2]] == '?':
+                     field[temp[1]][temp[2]] = 'K'
+        else:
+            if temp[0] and field[temp[1]][temp[2]] == 'K':
+                field[temp[1]][temp[2]] = '?'
+    return ret
 
 
 
@@ -154,7 +188,11 @@ while Markmines(field) >0:
 f.close()
 #The output File is written
 print tabulate(field)
-iterateMines(field,1,3)
+for i, col in enumerate(field):
+    for j,el in enumerate(col):
+        if isinstance(el,int) and el > 0:
+            iterateMines(field,i,j)
+
 f2 = open("Output-Mines.txt","w")
 for i in range(len(field)):
     for j in range(len(field)):
