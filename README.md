@@ -54,16 +54,28 @@ Input-File:	The first line is always a single number describing how many rows/co
 		From the second line on the the field is printed out. "?" indicate and unknown field, " " a field without mines 
 		and a number "n" describes how many mines are in direct neighbourhood of this field.
 		Example:
+		
 		9
+		
 		    1????
+		    
 		    1????
+		    
 		    111??
+		    
 		      1??
+		      
 		1211  1??
+		
 		???21 1??
+		
 		????211??
+		
 		?????????
+		
 		?????????
+		
+
 Output-File:	Each line conists of two numbers "x y" and show the coordinates of fields where a mine can NOT be.
 
 >>>>>>> 311407acc4d8a2242ced57cc6addfafc7aac8d77
